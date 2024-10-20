@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Cabin:ital,wght@0,400..700;1,400..700&family=Play:wght@400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Play", sans-serif;
+        }
+        body{
+            background-image: url("./2126183.jpg");
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .main {
+            background-color: rgba(0, 0, 0, 0.696);
+            width: 320px;
+            height: 500px;
+            border-radius: 15px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            padding: 20px 10px;
+            backdrop-filter: blur(15px);
+        }
+        .res {
+            border: 1px solid rgba(255, 255, 255, 0.475);
+            width: 100%;
+            height: 20%;
+            border-radius: 10px;
+        }
+        .ip {
+            border: 1px solid rgba(255, 255, 255, 0.475);
+            width: 100%;
+            height: 10%;
+            border-radius: 10px;
+        }
+        .btns {
+            width: 100%;
+            height: 70%;
+        }
+        #res-in {
+            width: 100%;
+            height: 100%;
+            text-align: right;
+            font-size: 40px;
+            border: none;
+            outline: none;
+            caret-color: transparent;
+            color: white;
+            background-color: inherit;
+            padding: 0 10px;
+        }
+        #ip-in {
+            width: 100%;
+            height: 100%;
+            text-align: right;
+            font-size: xx-large;
+            border: none;
+            outline: none;
+            caret-color: transparent;
+            color: gray;
+            background-color: inherit;
+            padding: 0 10px;
+        }
+        .btns {
+            display: grid;
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .eq {
+            grid-area: 5 / 3 / 6 / 5;
+        }
+        .bt{
+            background-color: inherit;
+            color: grey;
+            font-size: large;
+            border: none;
+            border-radius: 10px;
+            box-shadow: rgba(33, 33, 83, 0.25) 0px 50px 100px -20px, rgba(51, 40, 75, 0.3) 0px 30px 60px -30px, rgba(208, 203, 255, 0.35) 0px -2px 6px 0px inset;
+        }
+        .bt:hover{
+            box-shadow: rgba(255, 0, 0, 0.25) 0px 50px 100px -20px, rgba(255, 0, 0, 0.3) 0px 30px 60px -30px, rgba(255, 13, 13, 0.35) 0px -2px 6px 0px inset;
+        }
+        .r{
+            color: red;
+        }
+        #equal{
+            background-color: red;
+            color: white;
+        }
+        h2{
+            color: red;
+        }
+    </style>
+    <script>
+        function ac() {
+            document.getElementById("ip-in").value = "";
+            document.getElementById("res-in").value = "";
+            resizeInputFont(document.getElementById("ip-in"));
+            resizeInputFont(document.getElementById("res-in"));
+        }
+        function del() {
+            let v1 = document.getElementById("ip-in").value;
+            let v2 = v1.substring(0, v1.length - 1);
+            document.getElementById("ip-in").value = v2;
+            resizeInputFont(document.getElementById("ip-in"));
+        }
+        function eq() {
+            let v1 = document.getElementById("ip-in").value;
+            let v2 = v1.replace('÷', '/');
+            let v3 = v2.replace('×', '*');
+            let v = eval(v3);
+            document.getElementById("res-in").value = v;
+            resizeInputFont(document.getElementById("res-in"));
+        }
+        function val(v) {
+            let v1 = document.getElementById("ip-in").value;
+            let v2 = v1.concat(v);
+            document.getElementById("ip-in").value = v2;
+            resizeInputFont(document.getElementById("ip-in"));
+        }
+        function resizeInputFont(input) {
+            let fontSize = 50; // Initial font size for res-in
+            if (input.id === "ip-in") fontSize = 24; // Initial font size for ip-in
+            input.style.fontSize = fontSize + "px";
+            let scrollWidth = input.scrollWidth;
+            let clientWidth = input.clientWidth;
+            while (scrollWidth > clientWidth && fontSize > 12) {
+                fontSize--;
+                input.style.fontSize = fontSize + "px";
+                scrollWidth = input.scrollWidth;
+            }
+        }
+        document.onkeydown = function (e) {
+            if (/[0-9%\-+*/.]/i.test(e.key)) {
+                e.preventDefault();  // Prevent default behavior for keydown
+                val(e.key);
+            }
+            if (e.key == "Enter") {
+                e.preventDefault();  // Prevent default behavior for Enter key
+                eq();
+            }
+            if (e.keyCode == 8 || e.key == "Delete") {
+                e.preventDefault();  // Prevent default behavior for Backspace and Delete keys
+                del();
+            }
+        };
+    </script>
+</head>
+<body>
+    <br><br>
+    <center><h2>CALCULATOR</h2></center>
+    <div class="main">
+        <div class="res">
+            <input type="text" id="res-in" readonly>
+        </div>
+        <div class="ip">
+            <input type="text" id="ip-in" onkeypress="return /[0-9%\-+*/.]/i.test(event.key)" autofocus>
+        </div>
+        <div class="btns">
+            <button onclick="ac()" class="bt r">AC</button>
+            <button onclick="del()" class="bt r">DEL</button>
+            <button onclick="val('%')" class="bt r">%</button>
+            <button onclick="val('÷')" class="bt r">÷</button>
+            <button onclick="val('9')" class="bt">9</button>
+            <button onclick="val('8')" class="bt">8</button>
+            <button onclick="val('7')" class="bt">7</button>
+            <button onclick="val('×')" class="bt r">×</button>
+            <button onclick="val('6')" class="bt">6</button>
+            <button onclick="val('5')" class="bt">5</button>
+            <button onclick="val('4')" class="bt">4</button>
+            <button onclick="val('-')" class="bt r">-</button>
+            <button onclick="val('3')" class="bt">3</button>
+            <button onclick="val('2')" class="bt">2</button>
+            <button onclick="val('1')" class="bt">1</button>
+            <button onclick="val('+')" class="bt r">+</button>
+            <button onclick="val('.')" class="bt">.</button>
+            <button onclick="val('0')" class="bt">0</button>
+            <button onclick="eq()" class="bt eq" id="equal">=</button>
+        </div>
+    </div>
+    <script>
+        var i = document.getElementById('ip-in');
+        i.addEventListener("keypress", function (event) {
+            if (event.key == "Enter") {
+                event.preventDefault();
+                document.getElementById("equal").click();
+            }
+        });
+    </script>
+</body>
+</html>
